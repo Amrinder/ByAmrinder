@@ -8,13 +8,15 @@
 }
 .name {
     font-family: 'Source Sans Pro';
+	color: white;
     font-size: 50px;
 	font-weight: 100;
 	position: absolute;
 	text-align: center;
-	top: 0px;
-	left: 0px;
-	transition: top 2s, left 1s;
+	height: 0px;
+	width: 0px;
+	border-top: thin solid black;
+	border-bottom: thin solid black;
 }
 
 .awesome-menu {
@@ -25,6 +27,13 @@
 	text-align: center;
 }
 
+.info-icon {
+	height: 64px;
+	width: 64px;
+	position: relative;
+	top: 30px;
+	left: 30px;
+}
 .gol-menu-item {
 	height: 100px;
 	width : 100px;

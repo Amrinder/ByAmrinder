@@ -3,7 +3,7 @@
  */
 
 function init() {
-	YUI().use('node', function (Y) {
+	YUI().use('node', 'transition', function (Y) {
 		var body = Y.one('.am-body'),
 			container = body.one('.am-container'),
 			containerHeight = body.get('offsetHeight'),
@@ -14,19 +14,55 @@ function init() {
 			'width' : containerWidth
 		});
 
-		function alignName() {
-			var nameNode = container.one('.name'),
-				nameNodeHeight = nameNode.get('offsetHeight'),
-				nameNodeWidth = nameNode.get('offsetWidth');
+		function renderName() {
+			var nameNode = Y.Node.create('<div class="name">Amrinder Singh' +
+				'<span class="title">Full Stack Engineer</span>' +
+				'</div>');
 
 			nameNode.setXY([
-			    (containerWidth - nameNodeWidth) / 2,
-			    (containerHeight - nameNodeHeight) / 2
+			    (containerWidth) / 2,
+			    (containerHeight) / 2
 			]);
 
-			nameNode.setStyle('display', 'block');
+			container.append(nameNode);
+			container.one('.name').transition({
+				duration: 1, // seconds
+				easing: 'ease',
+				width: '554px',
+				opacity: 1,
+				height: {
+					delay: 1,
+					duration: 0.5,
+					value: '64px',
+					easing: 'ease'
+				},
+				top: {
+					delay: 1,
+					duration: 0.5,
+					value: (containerHeight - 64) / 2 + 'px', 
+					easing: 'ease'
+				},
+				left: {
+					delay: 0,
+					duration: 1,
+					value: (containerWidth - 554) / 2 + 'px',
+					easing: 'ease'
+				},
+				color: {
+					delay: 2,
+					duration: 1,
+					value: 'black',
+					easing: 'ease'
+				},
+				border: {
+					delay: 2,
+					duration: 1,
+					value: 'white thin solid',
+					easing: 'ease'
+				}
+			});
 		}
 
-		alignName();
+		renderName();
 	});
 }

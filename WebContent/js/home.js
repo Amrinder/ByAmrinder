@@ -63,6 +63,49 @@ function init() {
 			});
 		}
 
+		function renderInfo () {
+			var node = Y.Node.create('<div class="info-container"></div>'),
+				infoNode = Y.Node.create('<div class="info-box shrinked"><div class="pic"></div>' +
+						'<div class="info-content">I am Amrinder Singh.</br>' +
+						'A Full Stack Engineer,</br>' +
+						'Specializing in UI/UX Developement.</br>' +
+						'I Gratuated from</br>Thapar University and</br>' +
+						'currently living in</br>Chandigarh' +
+						'</div><div class="info-icon"></div></div>'),
+				infoBox = null;
+				
+			infoNode.setStyle('height', containerWidth);
+			node.append(infoNode);
+			container.append(node);
+			infoBox = container.one('.info-box');
+			container.one('.info-container').transition({
+				delay: 2,
+				duration: 1,
+				opacity: '1',
+				easing: 'ease',
+			});
+			container.delegate('click', function () {
+				if (infoBox.hasClass('shrinked')) {
+					infoBox.transition({
+						duration: 1,
+						left: '0px',
+						easing: 'ease',
+					});
+					infoBox.addClass('expanded');
+					infoBox.removeClass('shrinked');
+				} else if (infoBox.hasClass('expanded')) {
+					infoBox.transition({
+						duration: 1,
+						left: '-251px',
+						easing: 'ease',
+					});
+					infoBox.addClass('shrinked');
+					infoBox.removeClass('expanded');
+				}
+			}, '.info-icon');
+		}
+		
 		renderName();
+		renderInfo();
 	});
 }

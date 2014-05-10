@@ -3,16 +3,25 @@
  */
 
 function init() {
-	YUI().use('node', 'transition', 'event-mouseenter', function (Y) {
+	YUI().use('node', 'transition', 'event-mouseenter', 'anim', 'event', function (Y) {
 		var body = Y.one('.am-body'),
 			container = body.one('.am-container'),
 			containerHeight = body.get('offsetHeight'),
-			containerWidth = body.get('offsetWidth');
+			containerWidth = body.get('offsetWidth') + 17,
+			MENU_HTML = '<ul><li>Skills</li><li>Projects</li><li>Blog</li><li>Contact</li></ul>',
+			skillAnim = getAnim(containerHeight),
+			projectsAnim = getAnim(containerHeight * 2),
+			blogAnim = getAnim(containerHeight * 3)
+			contactAnim = getAnim(containerHeight * 4);
 
+		body.setStyle('width', containerWidth);
+		
 		container.setStyles({
 			'height': containerHeight,
 			'width' : containerWidth
 		});
+		
+		container.addClass('page');
 
 		function renderName() {
 			var nameNode = Y.Node.create('<div class="name">Amrinder Singh' +
@@ -75,26 +84,25 @@ function init() {
 				infoBox = null,
 				infoContainer = null;
 				
-			infoNode.setStyle('height', containerHeight);
 			node.append(infoNode);
-			container.append(node);
-			infoBox = container.one('.info-box');
-			infoContent = container.one('.info-content');
+			body.append(node);
+			infoBox = body.one('.info-box');
+			infoContent = body.one('.info-content');
 			
-			container.one('.info-container').transition({
+			body.one('.info-container').transition({
 				delay: 2,
 				duration: 1,
 				opacity: '1',
-				easing: 'ease',
+				easing: 'ease'
 			});
 			
-			container.delegate('click', function () {
+			body.delegate('click', function () {
 				if (infoBox.hasClass('shrinked')) {
 				
 					infoBox.transition({
 						duration: 1,
 						left: '0px',
-						easing: 'ease',
+						easing: 'ease'
 					});
 					
 					infoContent.transition({
@@ -108,7 +116,7 @@ function init() {
 					infoBox.transition({
 						duration: 1,
 						left: '-251px',
-						easing: 'ease',
+						easing: 'ease'
 					});
 					
 					infoContent.transition({
@@ -123,64 +131,99 @@ function init() {
 			}, '.info-icon');
 		}
 		
-		function renderMenu() {
-			var node = Y.Node.create('<div class="navigate-down"></div>'),
-				navNode = null;
-			
-			node.setStyles({
-				bottom: '0px',
-				left: (containerWidth - 48) / 2 + 'px',
-			});
-			
-			container.append(node);
-			
-			container.one('.navigate-down').transition({
-				delay: 2,
+		function getAnim(height) {
+			return new Y.Anim({
+				node: '.am-body',
+				to:{
+					scroll: [0, height]
+				},
 				duration: 1,
-				opacity: '1',
-				bottom: '30px',
-				easing: 'ease'
-			});
-			container.one('.navigate-down').on('mouseenter', function () {
-				container.one('.navigate-down').transition({
-					duration: 0.1,
-					bottom: '25px',
-					easing: 'ease'
-				});	
-			});
-			container.one('.navigate-down').on('mouseleave', function () {
-				container.one('.navigate-down').transition({
-					duration: 0.1,
-					bottom: '30px',
-					easing: 'ease'
-				});	
+				easing: Y.Easing.easeBoth
 			});
 		}
 		
-		function renderButton(container, text) {
-			var button = Y.Node.create('<div class="menu-button"></div>'),
-				buttonFlip = Y.Node.create('<div class="button-back"></div>');
+		function renderMenu() {
+			var node = Y.Node.create('<div class="menu-container"></div>'),
+				navNode = null;
 				
-			buttonFlip.setHTML(text);
-			container.append(button);
-			container.append(buttonFlip);
-			
-			button.on('hover', function () {
-				button.transition({
-					duration: 1,
-					width: '0px',
-					easing: 'ease'
-				});
-				buttonFlip.transition({
-					delay: 1,
-					duration: 1,
-					width: '100px',
-					easing: 'ease'
-				});
+			node.append(Y.Node.create(MENU_HTML));
+			body.append(node);
+			body.one('.menu-container').transition({
+				delay: 2,
+				duration: 1,
+				opacity: '1',
+				easing: 'ease'
 			});
 		}
-		renderName();
-		renderInfo();
-		renderMenu();
+	
+
+		function renderPage(id, color) {
+			var con = Y.Node.create('<div class="page" id="' + id + '"></div>');
+			
+			con.setStyles({
+				'height': containerHeight,
+				'width' : containerWidth,
+				'background': color
+			});
+			
+			body.append(con);
+		}
+		
+		
+		
+		function renderPages() {
+			renderPage('#skills', 'purple');
+			renderPage('#projects', 'red');
+			renderPage('#blog', 'yellow');
+			renderPage('#contact', 'green');
+		}
+		
+		function renderUI() {
+			renderName();
+			renderInfo();
+			renderMenu();
+			renderPages();
+			body.set('scrollTop', 0);
+		}
+		
+		function gotoSkills() {
+			skillAnim.run();
+		}
+		
+		function gotoContact() {
+			contactAnim.run();
+		}
+		
+		function gotoBlog() {
+			blogAnim.run();
+		}
+		
+		function gotoProjects() {
+			projectsAnim.run();
+		}
+		
+		function bindUI() {
+			body.delegate('click', function (e) {
+				var clickedItem = e.currentTarget.getHTML().toLowerCase();
+				
+				switch (clickedItem) {
+				
+				case 'skills': gotoSkills();
+					break;
+					
+				case 'blog': gotoBlog();
+					break;
+					
+				case 'contact': gotoContact();
+					break;
+					
+				case 'projects': gotoProjects();
+					break;
+				}
+			}, '.menu-container li', this);
+		}
+		
+		renderUI();
+		bindUI();
 	});
 }

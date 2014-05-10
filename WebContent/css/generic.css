@@ -1,7 +1,11 @@
+.body {
+	overflow: hidden;
+}
+
 .am-body {
     height: 100%;
     left: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     position: absolute;
     top: 0;
     width: 100%;
@@ -44,11 +48,26 @@
 
 .menu-container {
 	opacity: 0;
-	position: absolute;
-	right: 0px;
+	position: fixed;
+	right: 40px;
 	top: 0px;
-	height: 100%;
-	width: 150px;
+}
+
+.menu-container li {
+	display: inline-block;
+	padding: 10px;
+	transition: background-color .5s;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.menu-container li:hover {
+	background-color: black;
+	color: white;
+	cursor: pointer;
 }
 
 .menu-button {
@@ -79,10 +98,12 @@
 	height: 100px;
 	width: 100px;
 }
+
 .info-container {
 	opacity: 0;
 	position: fixed;
 	top: 0px;
+	height: 100%;
 }
 
 .info-box {
@@ -147,11 +168,4 @@
     text-align: center;
 	position: absolute;
 	bottom: 50px;
-}
-
-.menu-con  {
-    list-style-type: none;
-	padding: 0;
-	background-color: black;
-	opacity: 0.4;
 }
